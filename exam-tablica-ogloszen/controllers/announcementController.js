@@ -14,7 +14,37 @@ exports.getAnnouncementById = async (req, res) => {
   const announcement = await Announcement.findById(req.params.id);
   if (!announcement)
    return res.status(404).json({ message: "Ogłoszenie nie znalezione" });
-  res.json(announcement);
+
+  console.log("Accept header:", req.headers.accept);
+
+  res.format({
+   "application/json": () => {
+    res.json(announcement);
+   },
+   "text/plain": () => {
+    res.send(
+     `Title: ${announcement.title}\n` +
+      `Description: ${announcement.description}\n` +
+      `Author: ${announcement.author}\n` +
+      `Category: ${announcement.category}\n` +
+      `Tags: ${announcement.tags.join(", ")}\n` +
+      `Price: ${announcement.price}`
+    );
+   },
+   "text/html": () => {
+    res.send(
+     `<h1>${announcement.title}</h1>` +
+      `<p>${announcement.description}</p>` +
+      `<p><strong>Author:</strong> ${announcement.author}</p>` +
+      `<p><strong>Category:</strong> ${announcement.category}</p>` +
+      `<p><strong>Tags:</strong> ${announcement.tags.join(", ")}</p>` +
+      `<p><strong>Price:</strong> ${announcement.price}</p>`
+    );
+   },
+   default: () => {
+    res.status(406).send("Not Acceptable");
+   },
+  });
  } catch (err) {
   res.status(500).json({ message: err.message });
  }
