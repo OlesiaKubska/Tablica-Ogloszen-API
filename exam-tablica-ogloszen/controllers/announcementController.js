@@ -107,7 +107,9 @@ exports.getAnnouncementById = async (req, res) => {
 };
 
 exports.createAnnouncement = async (req, res) => {
- const { title, description, author, category, tags, price } = req.body;
+ const { title, description, category, tags, price } = req.body;
+ const author = req.user.username;
+
  try {
   const newAnnouncement = new Announcement({
    title,
