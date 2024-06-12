@@ -1,13 +1,19 @@
-const mongoose = require("mongoose");
+const express = require("express");
+const router = express.Router();
+const {
+ getAnnouncements,
+ getAnnouncementById,
+ createAnnouncement,
+ updateAnnouncement,
+ deleteAnnouncement,
+} = require("../controllers/announcementController");
 
-const announcementSchema = new mongoose.Schema({
- title: { type: String, required: true },
- description: { type: String, required: true },
- author: { type: String, required: true },
- category: { type: String, required: true },
- tags: [String],
- price: { type: Number, required: true },
- createdAt: { type: Date, default: Date.now },
-});
+router.route("/").get(getAnnouncements).post(createAnnouncement);
 
-module.exports = mongoose.model("Announcement", announcementSchema);
+router
+ .route("/:id")
+ .get(getAnnouncementById)
+ .put(updateAnnouncement)
+ .delete(deleteAnnouncement);
+
+module.exports = router;
