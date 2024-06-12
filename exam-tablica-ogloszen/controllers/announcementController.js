@@ -1,8 +1,64 @@
 const Announcement = require("../models/Announcement");
 
 exports.getAnnouncements = async (req, res) => {
+ const {
+  title,
+  description,
+  startDate,
+  endDate,
+  minPrice,
+  maxPrice,
+  category,
+  author,
+  tags,
+ } = req.query;
+
+ let filter = {};
+
+ if (title) {
+  filter.title = { $regex: title, $options: "i" };
+ }
+
+ if (description) {
+  filter.description = { $regex: description, $options: "i" };
+ }
+
+ if (startDate || endDate) {
+  filter.createdAt = {};
+  if (startDate) {
+   filter.createdAt.$gte = new Date(startDate);
+  }
+  if (endDate) {
+   filter.createdAt.$lte = new Date(endDate);
+  }
+ }
+
+ if (minPrice || maxPrice) {
+  filter.price = {};
+  if (minPrice) {
+   filter.price.$gte = parseFloat(minPrice);
+  }
+  if (maxPrice) {
+   filter.price.$lte = parseFloat(maxPrice);
+  }
+ }
+
+ if (category) {
+  filter.category = category;
+ }
+
+ if (author) {
+  filter.author = { $regex: author, $options: "i" };
+ }
+
+ if (tags) {
+  filter.tags = { $in: tags.split(",") };
+ }
+
+ console.log("Filter:", filter);
+
  try {
-  const announcements = await Announcement.find();
+  const announcements = await Announcement.find(filter);
   res.json(announcements);
  } catch (err) {
   res.status(500).json({ message: err.message });
