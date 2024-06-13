@@ -1,6 +1,7 @@
+const mongoose = require("mongoose");
 const Announcement = require("../models/Announcement");
 
-exports.getAnnouncements = async (req, res) => {
+exports.getAnnouncements = async (req, res, next) => {
  const {
   title,
   description,
@@ -61,12 +62,16 @@ exports.getAnnouncements = async (req, res) => {
   const announcements = await Announcement.find(filter);
   res.json(announcements);
  } catch (err) {
-  res.status(500).json({ message: err.message });
+  next(err);
  }
 };
 
-exports.getAnnouncementById = async (req, res) => {
+exports.getAnnouncementById = async (req, res, next) => {
  try {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+   return res.status(400).json({ message: "Nieprawidłowe ID" });
+  }
+
   const announcement = await Announcement.findById(req.params.id);
   if (!announcement)
    return res.status(404).json({ message: "Ogłoszenie nie znalezione" });
@@ -102,11 +107,11 @@ exports.getAnnouncementById = async (req, res) => {
    },
   });
  } catch (err) {
-  res.status(500).json({ message: err.message });
+  next(err);
  }
 };
 
-exports.createAnnouncement = async (req, res) => {
+exports.createAnnouncement = async (req, res, next) => {
  const { title, description, category, tags, price } = req.body;
  const author = req.user.username;
 
@@ -122,12 +127,16 @@ exports.createAnnouncement = async (req, res) => {
   await newAnnouncement.save();
   res.status(201).json(newAnnouncement);
  } catch (err) {
-  res.status(400).json({ message: err.message });
+  next(err);
  }
 };
 
-exports.updateAnnouncement = async (req, res) => {
+exports.updateAnnouncement = async (req, res, next) => {
  try {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+   return res.status(400).json({ message: "Nieprawidłowe ID" });
+  }
+
   const updatedAnnouncement = await Announcement.findByIdAndUpdate(
    req.params.id,
    req.body,
@@ -137,17 +146,21 @@ exports.updateAnnouncement = async (req, res) => {
    return res.status(404).json({ message: "Ogłoszenie nie znalezione" });
   res.json(updatedAnnouncement);
  } catch (err) {
-  res.status(400).json({ message: err.message });
+  next(err);
  }
 };
 
-exports.deleteAnnouncement = async (req, res) => {
+exports.deleteAnnouncement = async (req, res, next) => {
  try {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+   return res.status(400).json({ message: "Nieprawidłowe ID" });
+  }
+
   const announcement = await Announcement.findByIdAndDelete(req.params.id);
   if (!announcement)
    return res.status(404).json({ message: "Ogłoszenie nie znalezione" });
   res.json({ message: "Ogłoszenie usunięte" });
  } catch (err) {
-  res.status(500).json({ message: err.message });
+  next(err);
  }
 };

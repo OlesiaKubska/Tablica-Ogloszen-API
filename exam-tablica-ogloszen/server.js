@@ -29,5 +29,11 @@ app.use((req, res, next) => {
  res.status(404).sendFile(path.join(__dirname, "public", "404.png"));
 });
 
+// Middleware do obsługi błędów aplikacji
+app.use((err, req, res, next) => {
+ console.error(err.stack); // Logowanie szczegółów błędu na serwerze
+ res.status(500).json({ message: "Wewnętrzny błąd serwera" }); // Wysłanie komunikatu do klienta
+});
+
 const PORT = process.env.PORT || 4700;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
