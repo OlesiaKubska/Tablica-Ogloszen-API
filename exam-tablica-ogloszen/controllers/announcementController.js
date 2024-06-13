@@ -89,7 +89,8 @@ exports.getAnnouncementById = async (req, res, next) => {
       `Author: ${announcement.author}\n` +
       `Category: ${announcement.category}\n` +
       `Tags: ${announcement.tags.join(", ")}\n` +
-      `Price: ${announcement.price}`
+      `Price: ${announcement.price}` +
+      `Images: ${announcement.images.join(", ")}`
     );
    },
    "text/html": () => {
@@ -99,7 +100,9 @@ exports.getAnnouncementById = async (req, res, next) => {
       `<p><strong>Author:</strong> ${announcement.author}</p>` +
       `<p><strong>Category:</strong> ${announcement.category}</p>` +
       `<p><strong>Tags:</strong> ${announcement.tags.join(", ")}</p>` +
-      `<p><strong>Price:</strong> ${announcement.price}</p>`
+      `<p><strong>Price:</strong> ${announcement.price}</p>``<p><strong>Images:</strong> ${announcement.images
+       .map((image) => `<img src="/uploads/${image}" />`)
+       .join("")}</p>`
     );
    },
    default: () => {
@@ -114,6 +117,13 @@ exports.getAnnouncementById = async (req, res, next) => {
 exports.createAnnouncement = async (req, res, next) => {
  const { title, description, category, tags, price } = req.body;
  const author = req.user.username;
+ const images = req.files.map((file) => file.filename);
+
+ if (!title || !description || !category || !price) {
+  return res.status(400).json({
+   message: "Brakuje wymaganych pól: title, description, category, price",
+  });
+ }
 
  try {
   const newAnnouncement = new Announcement({
@@ -123,6 +133,7 @@ exports.createAnnouncement = async (req, res, next) => {
    category,
    tags,
    price,
+   images,
   });
   await newAnnouncement.save();
   res.status(201).json(newAnnouncement);
@@ -137,9 +148,12 @@ exports.updateAnnouncement = async (req, res, next) => {
    return res.status(400).json({ message: "Nieprawidłowe ID" });
   }
 
+  const images = req.files.map((file) => file.filename);
+  const updatedData = { ...req.body, images };
+
   const updatedAnnouncement = await Announcement.findByIdAndUpdate(
    req.params.id,
-   req.body,
+   updatedData,
    { new: true, runValidators: true }
   );
   if (!updatedAnnouncement)

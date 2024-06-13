@@ -20,6 +20,9 @@ if (process.argv.includes("debug")) {
  });
 }
 
+// Umożliw serwowanie plików z katalogu uploads
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 app.use("/api/announcements", announcementRoutes);
 app.use("/heartbeat", heartbeatRoutes);
 
