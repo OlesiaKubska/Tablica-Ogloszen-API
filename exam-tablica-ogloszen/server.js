@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const path = require("path");
+const setupSwagger = require("./swagger");
 const connectDB = require("./config/db");
 const announcementRoutes = require("./routes/announcementRoutes");
 const heartbeatRoutes = require("./routes/heartbeatRoutes");
@@ -25,6 +26,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/announcements", announcementRoutes);
 app.use("/heartbeat", heartbeatRoutes);
+
+// Setup Swagger
+setupSwagger(app);
 
 // Middleware do obsługi błędów 404 - zwracanie statycznego obrazka
 app.use((req, res, next) => {
