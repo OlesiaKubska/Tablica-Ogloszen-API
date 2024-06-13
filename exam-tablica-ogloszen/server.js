@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const path = require("path");
 const connectDB = require("./config/db");
 const announcementRoutes = require("./routes/announcementRoutes");
 const heartbeatRoutes = require("./routes/heartbeatRoutes");
@@ -21,6 +22,12 @@ if (process.argv.includes("debug")) {
 
 app.use("/api/announcements", announcementRoutes);
 app.use("/heartbeat", heartbeatRoutes);
+
+// Middleware do obsługi błędów 404 - zwracanie statycznego obrazka
+app.use((req, res, next) => {
+ console.log("404 error middleware hit");
+ res.status(404).sendFile(path.join(__dirname, "public", "404.png"));
+});
 
 const PORT = process.env.PORT || 4700;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
