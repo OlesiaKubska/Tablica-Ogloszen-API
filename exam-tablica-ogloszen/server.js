@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const path = require("path");
+const cors = require("cors");
 const setupSwagger = require("./swagger");
 const connectDB = require("./config/db");
 const announcementRoutes = require("./routes/announcementRoutes");
@@ -12,6 +13,9 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+
+// Middleware do obsługi CORS
+app.use(cors());
 
 // Middleware do logowania żądań
 if (process.argv.includes("debug")) {

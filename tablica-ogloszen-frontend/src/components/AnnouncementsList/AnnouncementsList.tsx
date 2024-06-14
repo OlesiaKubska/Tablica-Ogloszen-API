@@ -14,8 +14,12 @@ const AnnouncementsList: React.FC = () => {
 
  useEffect(() => {
   const fetchAnnouncements = async () => {
-   const response = await api.get("/announcements");
-   setAnnouncements(response.data);
+   try {
+    const response = await api.get("/announcements");
+    setAnnouncements(response.data);
+   } catch (error) {
+    console.error("There was an error fetching the announcements!", error);
+   }
   };
 
   fetchAnnouncements();
