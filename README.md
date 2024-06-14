@@ -1,26 +1,26 @@
-# Tablica Ogłoszeń API
+# 🚀 Tablica Ogłoszeń API
 
 Tablica Ogłoszeń to aplikacja do zarządzania ogłoszeniami online. Aplikacja umożliwia tworzenie, aktualizowanie, usuwanie oraz przeglądanie ogłoszeń. Aplikacja wspiera dodawanie obrazków do ogłoszeń oraz posiada dokumentację API za pomocą Swaggera.
 
-## Spis treści
+##  📄 Spis treści
 
-- [Tablica Ogłoszeń API](#tablica-ogłoszeń-api)
-  - [Spis treści](#spis-treści)
-  - [Wymagania](#wymagania)
-  - [Instalacja](#instalacja)
-  - [Uruchomienie](#uruchomienie)
-  - [Endpointy API](#endpointy-api)
-    - [Announcements](#announcements)
-    - [Heartbeat](#heartbeat)
-  - [Dokumentacja Swagger](#dokumentacja-swagger)
-  - [Autor](#autor)
+- 🚀 [Tablica Ogłoszeń API] 🚀 (#tablica-ogłoszeń-api)
+  - 📄 [Spis treści] 📄 (#spis-treści)
+  - 📝 [Wymagania] 📝 (#wymagania)
+  - 💾 [Instalacja] 💾 (#instalacja)
+  - ▶️ [Uruchomienie] ▶️ (#uruchomienie)
+  - 🌐 [Endpointy API] 🌐 (#endpointy-api)
+    - 🗒️ [Announcements] 🗒️ (#announcements)
+    - ❤️ [Heartbeat] ❤️ (#heartbeat)
+  - 📚 [Dokumentacja Swagger] 📚 (#dokumentacja-swagger)
+  - ✍️ [Autor] ✍️ (#autor)
 
-## Wymagania
+## 📝 Wymagania
 
 - Node.js v12 lub nowszy
 - MongoDB
 
-## Instalacja
+## 💾 Instalacja
 
 1. Sklonuj repozytorium:
     ```bash
@@ -46,7 +46,7 @@ Tablica Ogłoszeń to aplikacja do zarządzania ogłoszeniami online. Aplikacja 
     USER3_PASSWORD=password3
     ```
 
-## Uruchomienie
+## ▶️ Uruchomienie
 
 1. Upewnij się, że MongoDB jest uruchomiony.
 2. Uruchom serwer:
@@ -54,9 +54,9 @@ Tablica Ogłoszeń to aplikacja do zarządzania ogłoszeniami online. Aplikacja 
     node server.js
     ```
 
-## Endpointy API
+## 🌐 Endpointy API
 
-### Announcements
+### 🗒️ Announcements
 
 - **GET /api/announcements**: Pobierz wszystkie ogłoszenia
 - **POST /api/announcements**: Utwórz nowe ogłoszenie
@@ -89,15 +89,15 @@ Tablica Ogłoszeń to aplikacja do zarządzania ogłoszeniami online. Aplikacja 
     - `username`: Nazwa użytkownika
     - `password`: Hasło użytkownika
 
-### Heartbeat
+### ❤️ Heartbeat
 
 - **GET /heartbeat**: Zwraca aktualny czas serwera
 
-## Dokumentacja Swagger
+## 📚 Dokumentacja Swagger
 
 Dokumentacja API jest dostępna pod adresem:
 [http://localhost:4700/api-docs](http://localhost:4700/api-docs)
 
-## Autor
+## ✍️ Autor
 
 Olesia Kubska
